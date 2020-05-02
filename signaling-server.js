@@ -1,20 +1,25 @@
 /**************/
 /*** CONFIG ***/
 /**************/
-var PORT = 8080;
+var PORT = 443;
 
 
 /*************/
 /*** SETUP ***/
 /*************/
 var express = require('express');
-var http = require('http');
+var http = require('https');
 var bodyParser = require('body-parser')
 var main = express()
-var server = http.createServer(main)
-var io  = require('socket.io').listen(server);
-//io.set('log level', 2);
 
+
+var options = {
+    key: fs.readFileSync('.ssl/privkey.pem'),
+    cert: fs.readFileSync('.ssl/cert.pem'),
+  };
+//io.set('log level', 2);
+var server = http.createServer(options, main)
+var io  = require('socket.io').listen(server);
 server.listen(PORT, null, function() {
     console.log("Listening on port " + PORT);
 });
